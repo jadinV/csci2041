@@ -1,6 +1,6 @@
 let rec first_digit (num: int) : int =
   match num with
-  | x when x >= 0 && x < 10 -> x
+  | x when x >= 0 & x < 10 -> x
   | x when x > 10 -> first_digit (x / 10)
   | x when x < 0 -> first_digit (x * -1)
 
@@ -9,11 +9,11 @@ let rec product_to (num: int) : int =
 
 let is_prime (num: int) : bool =
   if num < 0 then raise (Failure "invalid input to is_prime")
-  else if num == 0 || num == 1 then false
+  else if num = 0 || num = 1 then false
   else
     let rec helper x y : bool =
       if y > (x / 2) then true
-      else if x mod y == 0 then false
+      else if x mod y = 0 then false
       else helper x (y+1)
     in helper num 2
 
