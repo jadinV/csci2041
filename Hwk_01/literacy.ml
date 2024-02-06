@@ -1,6 +1,6 @@
 let rec first_digit (num: int) : int =
   match num with
-  | x when x >= 0 & x < 10 -> x
+  | x when x >= 0 && x < 10 -> x
   | x when x > 10 -> first_digit (x / 10)
   | x when x < 0 -> first_digit (x * -1)
 

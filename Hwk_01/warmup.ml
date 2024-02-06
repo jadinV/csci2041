@@ -6,7 +6,7 @@ let cube (num: int) : int =
 
 let rec last_digit (num: int) : int =
   match num with
-  | x when x >= 0 & x < 10 -> x
+  | x when x >= 0 && x < 10 -> x
   | x when x > 10 -> last_digit (x mod 10)
   | x when x < 0 -> last_digit (x * -1)
 
