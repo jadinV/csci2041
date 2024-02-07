@@ -10,11 +10,13 @@ let div ((n1,d1): fraction) ((n2,d2): fraction) : fraction =
   (n1 * d2, d1 * n2)
 
 let rec simplify ((n1,d1): fraction) : fraction =
-  match n1 with
-  | n when n = 1 -> (n, d1)
-  | n when d1 mod n = 0 -> simplify (1, d1 / n)
-  | n when d1 mod n = 2 -> simplify (n / 2, d1 / 2)
-  | n -> (n, d1)
+  match (n1, d1) with
+  | (n, d) when n = 1 -> (n, d)
+  | (n, d) when d = 1 -> (n, d)
+  | (n, d) when n mod d = 0 -> (n / d, 1)
+  | (n, d) when d mod n = 0 -> simplify (1, d / n)
+  | (n, d) when d mod n = 2 -> simplify (n / 2, d / 2)
+  | (n, d) -> (n, d)
 
 let rec compute_lengths (words: string list) : (string * int) list =
   match words with
