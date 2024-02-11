@@ -22,7 +22,7 @@ let rec sum_of_squares (nums: int list) : int =
 let rec product_of_primes (nums: int list) : int =
   match nums with 
   | [] -> 1
-  | h::t when is_prime h -> h * product_of_primes t
+  | h::t when is_prime_faster h -> h * product_of_primes t
   | h::t -> product_of_primes t
 
 let max_int_string_pairs (lst: (string * int) list) : (string * int) list =

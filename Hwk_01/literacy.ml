@@ -18,7 +18,12 @@ let is_prime (num: int) : bool =
     in helper num 2
 
 let rec last_digits (nums: int list) : int list =
-  match nums with
+  let rec last_digit (num: int) : int =
+    match num with
+    | x when x >= 0 && x < 10 -> x
+    | x when x > 10 -> last_digit (x mod 10)
+    | x when x < 0 -> last_digit (x * -1)
+  in match nums with
   | [] -> []
   | h::t -> last_digit h :: last_digits t
 
