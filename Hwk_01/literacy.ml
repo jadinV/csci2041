@@ -7,6 +7,7 @@ let rec first_digit (num: int) : int =
 let rec product_to (num: int) : int =
   if num < 0 then raise (Failure "invalid input to product_to")
   else if num = 1 then 1
+  else if num = 0 then 0
   else num * product_to (num - 1)
 
 let is_prime (num: int) : bool =

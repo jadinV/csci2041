@@ -32,7 +32,11 @@ let max_int_string_pairs (lst: (string * int) list) : (string * int) list =
     | h::t -> let (s, n) = h in if n > max
                              then helper t n
                              else helper t max
-  in let biggest = helper lst 0
+  in let first_num = 
+    match lst with
+    | [] -> 0
+    | (s, n)::t -> n
+  in let biggest = helper lst first_num
   in let rec picker (lst: (string * int) list) =
     match lst with
    | [] -> raise (Failure "invalid input to max_int_string_pairs")
