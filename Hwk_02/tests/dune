@@ -1,0 +1,14 @@
+(test
+ (libraries warmup)
+ (modules warmup_tests)
+ (name warmup_tests))
+
+(test
+ (libraries literacy)
+ (modules literacy_tests)
+ (name literacy_tests))
+
+(test
+ (libraries mastery)
+ (modules mastery_tests)
+ (name mastery_tests))

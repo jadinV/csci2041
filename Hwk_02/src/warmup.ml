@@ -1,5 +1,4 @@
-type 'a tree = Leaf of 'a
-              | Branch of 'a tree * 'a tree
+type 'a tree = Leaf of 'a | Branch of 'a tree * 'a tree
 
 let rec tree_product (t: int tree) : int =
   match t with
@@ -41,4 +40,3 @@ let rec same_shape (l: 'a tree) (r: 'a tree) : bool =
   | (Leaf  _), (Branch (_, _)) -> false
   | (Branch (_, _), Leaf _) -> false
   | (Branch (t1, t2), Branch (t3, t4)) -> same_shape t1 t3 && same_shape t2 t4
-
