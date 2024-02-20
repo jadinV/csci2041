@@ -27,7 +27,7 @@ let tree_depth_range (t: 'a tree) : int * int =
     match tr with
     | Leaf(_) -> 0
     | Branch (t1, t2) when helper t1 > helper t2 -> helper t1 + 1
-    | Branch (t1, t2) -> helper t2 + 1
+    | Branch (_, t2) -> helper t2 + 1
   in 
   match t with
   | Leaf(_) -> (1, 1)
