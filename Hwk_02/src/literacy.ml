@@ -14,5 +14,10 @@ let rec append_nonempty (lst1: 'a nonempty_list) (lst2: 'a nonempty_list) : 'a n
 
 let rec normalize_shape (tr: 'a tree) : 'a nonempty_list =
   match tr with
-  | Leaf -> 
-  | Branch -> 
+  | Leaf x -> (One x)
+  | Branch (x, y) -> append_nonempty (normalize_shape x) (normalize_shape y)
+
+let same_fringe (tr1: 'a tree) (tr2: 'a tree) : bool =
+  let first = normalize_shape tr1 in
+  let second = normalize_shape tr2 in
+  (* ??? *)
