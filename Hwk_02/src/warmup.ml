@@ -25,13 +25,19 @@ let tree_range (t: int tree) : int * int =
 let tree_depth_range (t: 'a tree) : int * int =
   let rec helper (tr: 'a tree) : int =
     match tr with
-    | Leaf(_) -> 0
+    | Leaf(_) -> 1
     | Branch (t1, t2) when helper t1 > helper t2 -> helper t1 + 1
     | Branch (_, t2) -> helper t2 + 1
-  in 
+  in
+  let rec helper2 (tr: 'a tree) : int =
+    match tr with
+    | Leaf(_) -> 1
+    | Branch (t1, t2) when helper2 t1 < helper2 t2 -> helper2 t1 + 1
+    | Branch (_, t2) -> helper2 t2 + 1
+  in
   match t with
   | Leaf(_) -> (1, 1)
-  | Branch(_, _) -> let depth = helper t in (depth, depth + 1)
+  | Branch(_, _) -> (helper2 t, helper t)
 
 let rec same_shape (l: 'a tree) (r: 'a tree) : bool =
   match (l, r) with
