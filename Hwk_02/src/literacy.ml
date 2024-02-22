@@ -20,4 +20,20 @@ let rec normalize_shape (tr: 'a tree) : 'a nonempty_list =
 let same_fringe (tr1: 'a tree) (tr2: 'a tree) : bool =
   let first = normalize_shape tr1 in
   let second = normalize_shape tr2 in
-  (* ??? *)
+  first = second
+
+let rec map_lookup (map: ('key, 'value) maptree) (key: 'key) : 'value option =
+  match map with
+  | End -> None
+  | Node (_, k, v, _) when k = key -> Some v
+  | Node (left, _, _, right) -> if map_lookup left key <> None
+                                then map_lookup left key
+                                else map_lookup right key
+
+let rec map_insert (k: 'key) (v: 'value) (map: ('key, 'value) maptree) : ('key, 'value) maptree =
+  match map with
+  | Node (left, key, value, r) when k < key -> Node (map_insert k v left, key, value, r)
+  | Node (l, key, value, right) when k > key -> Node (l, key, value, map_insert k v right)
+  | Node (l, key, value, r) -> Node (l, k, v, r)
+  | End -> Node (End, k, v, End)
+
