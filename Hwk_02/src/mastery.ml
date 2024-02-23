@@ -46,3 +46,19 @@ let huffman_decode_string (bits : bool list) (tree : char tree) : string option 
   | None -> None
   | Some chars -> Some (string_of_chars chars)
 
+val eval (e: expr) : value =
+  match e with
+  | Lit x -> x
+  | Add (l, r) -> Int (l + r)
+  | Sub (l, r) -> Int (l - r)
+  | Mul (l, r) -> Int (l * r)
+  | Lte (l, r) -> Bool (l <= r)
+  | Eq (l, r) -> Bool (l = r)
+  | If (i, t, e) -> if i then t else e
+  | _ -> raise (Failure, "type error")
+
+val expr_has_type (ex: expr) (typ: ty) : bool =
+  match ex with
+  | Add (_, _) | Sub (_, _) | Mul (_, _) -> ty = IntTy
+  | Lte (_, _) | Eq (_, _) -> ty = IntTy
+  | _ -> false
