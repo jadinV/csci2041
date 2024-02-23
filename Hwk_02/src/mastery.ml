@@ -9,11 +9,6 @@ let tree3 = Branch (Branch (Branch (Leaf (Char.chr 101), Branch (Leaf (Char.chr 
 let string_of_chars (chars : char list) : string =
   String.of_seq (List.to_seq chars)
 
-let huffman_decode_string (bits : bool list) (tree : char tree) : string option =
-  match huffman_decode bits tree with
-  | None -> None
-  | Some chars -> Some (string_of_chars chars)
-
 type value = Bool of bool | Int of int
 
 type expr =
@@ -26,3 +21,28 @@ type expr =
   | If of expr * expr * expr
 
 type ty = BoolTy | IntTy
+
+let rec huffman_decode_one (bs: bool list) (tr: 'a tree) : (bool list * 'a) option =
+  match (bs, tr) with
+  | (_, Leaf x) -> Some (bs, x)
+  | (b::bs, Branch (_,r)) when b -> huffman_decode_one bs r
+  | (_::bs, Branch (l,_)) -> huffman_decode_one bs l
+  | ([], Branch (_,_)) -> None
+
+let rec huffman_decode (bs: bool list) (tr: 'a tree) : ('a list) option =
+  let get (op: 'a list option) : 'a list=
+    match op with 
+    | Some x -> x
+  in 
+  match huffman_decode_one bs tr with
+  | None when bs <> [] -> None
+  | None -> Some []
+  | Some ([], y) -> Some (y :: [])
+  | Some (x, y) when huffman_decode x tr <> None -> Some (y :: get (huffman_decode x tr))
+  | Some (_, _) -> None
+
+let huffman_decode_string (bits : bool list) (tree : char tree) : string option =
+  match huffman_decode bits tree with
+  | None -> None
+  | Some chars -> Some (string_of_chars chars)
+
