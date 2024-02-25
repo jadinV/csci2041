@@ -41,7 +41,6 @@ let tree_depth_range (t: 'a tree) : int * int =
 
 let rec same_shape (l: 'a tree) (r: 'a tree) : bool =
   match (l, r) with
-  | (l, r) when tree_depth_range l != tree_depth_range r -> false
   | (Leaf  _), (Leaf _) -> true
   | (Leaf  _), (Branch (_, _)) -> false
   | (Branch (_, _), Leaf _) -> false

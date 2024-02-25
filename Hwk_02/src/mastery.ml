@@ -33,6 +33,7 @@ let rec huffman_decode (bs: bool list) (tr: 'a tree) : ('a list) option =
   let get (op: 'a list option) : 'a list=
     match op with 
     | Some x -> x
+    | None -> raise (Failure "val of None")
   in 
   match huffman_decode_one bs tr with
   | None when bs <> [] -> None
@@ -46,19 +47,42 @@ let huffman_decode_string (bits : bool list) (tree : char tree) : string option 
   | None -> None
   | Some chars -> Some (string_of_chars chars)
 
-val eval (e: expr) : value =
+let rec eval (e: expr) : value =
   match e with
   | Lit x -> x
-  | Add (l, r) -> Int (l + r)
-  | Sub (l, r) -> Int (l - r)
-  | Mul (l, r) -> Int (l * r)
-  | Lte (l, r) -> Bool (l <= r)
-  | Eq (l, r) -> Bool (l = r)
-  | If (i, t, e) -> if i then t else e
-  | _ -> raise (Failure, "type error")
+  | Add (l, r) -> (match (eval l, eval r) with
+                  | Int left, Int right -> Int (left + right)
+                  | _, _ -> raise (Failure "type error"))
+  | Sub (l, r) -> (match (eval l, eval r) with
+                  | Int left, Int right -> Int (left - right)
+                  | _, _ -> raise (Failure "type error"))
+  | Mul (l, r) -> (match (eval l, eval r) with
+                  | Int left, Int right -> Int (left * right)
+                  | _, _ -> raise (Failure "type error"))
+  | Lte (l, r) -> (match (eval l, eval r) with
+                  | Int left, Int right -> Bool (left <= right)
+                  | _, _ -> raise (Failure "type error"))
+  | Eq (l, r) -> (match (eval l, eval r) with
+                  | Int left, Int right -> Bool (left = right)
+                  | _, _ -> raise (Failure "type error"))
+  | If (i, t, el) -> (match (eval i) with
+                      | Bool ifCond when ifCond -> eval t
+                      | Bool _ -> eval el
+                      | _ -> raise (Failure "type error"))
 
-val expr_has_type (ex: expr) (typ: ty) : bool =
+let expr_has_type (ex: expr) (typ: ty) : bool =
   match ex with
-  | Add (_, _) | Sub (_, _) | Mul (_, _) -> ty = IntTy
-  | Lte (_, _) | Eq (_, _) -> ty = IntTy
-  | _ -> false
+  | Add (l, r) | Sub (l, r) | Mul (l, r) -> (match (eval l, eval r) with
+                                            | Int  _, Int _ -> typ = IntTy
+                                            | _, _ -> false)
+  | Lte (l, r) | Eq (l, r) -> (match (eval l, eval r) with
+                               | Int  _, Int _ -> typ = BoolTy
+                               | _, _ -> false)
+  | Lit x -> (match x with
+              | Int _ -> typ = IntTy
+              | Bool _ -> typ = BoolTy)
+  | If (_, t, el) -> (match (eval t, eval el) with
+                      | Int _, Int _ -> typ = IntTy
+                      | Bool _, Bool _ -> typ = BoolTy
+                      | _, _ -> false)
+

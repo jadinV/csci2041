@@ -1,4 +1,17 @@
 open Literacy
 
-let () =
-  assert (normalize_shape (Leaf 13) = One 13)
+let () = assert (normalize_shape (Leaf 13) = One 13)
+let () = assert (eq_nonempty (Cons (4, (Cons (5, (Cons (3, (One 1)))))))
+                             (Cons (4, (Cons (5, (Cons (3, (One 1))))))) = true)
+let () = assert (eq_nonempty (Cons (4, (Cons (5, (Cons (3, (One 1)))))))
+                             (Cons (4, (Cons (5, (Cons (3, (One 5))))))) = false)
+let () = assert (eq_nonempty (Cons (4, (Cons (5, (Cons (3, (One 1)))))))
+                             (Cons (4, (Cons (5, (Cons (4, (One 1))))))) = false)
+let () = assert (eq_nonempty (Cons (4, (Cons (8, (Cons (3, (One 1)))))))
+                             (Cons (4, (Cons (5, (Cons (3, (One 1))))))) = false)
+let () = assert (eq_nonempty (Cons (4, (Cons (5, (Cons (3, (One 1)))))))
+                             (Cons (2, (Cons (5, (Cons (3, (One 1))))))) = false)
+let () = assert (map_lookup (Node (Node (End, 1, "B", End), 3, "A", Node (Node (End, 4, "A", End), 5, "C", End))) 0 = None)
+let () = assert (map_lookup (Node (Node (End, 1, "B", End), 3, "A", Node (Node (End, 4, "A", End), 5, "C", End))) 5 = Some "C")
+let () = assert (map_insert 4 "G" (Node (Node (End, 1, "B", End), 3, "A", Node (Node (End, 4, "A", End), 5, "C", End))) = Node (Node (End, 1, "B", End), 3, "A", Node (Node (End, 4, "G", End), 5, "C", End)))
+let () = assert (map_insert 6 "G" (Node (Node (End, 1, "B", End), 3, "A", Node (Node (End, 4, "A", End), 5, "C", End))) = Node (Node (End, 1, "B", End), 3, "A", Node (Node (End, 4, "A", End), 5, "C", Node(End, 6, "G", End))))

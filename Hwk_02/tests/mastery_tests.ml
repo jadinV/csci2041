@@ -1,4 +1,21 @@
 open Mastery
 
-let () =
-  assert (huffman_decode_one [false; false; false] tree3 = Some ([], 'e'))
+let () = assert (huffman_decode_one [false; false; false] tree3 = Some ([], 'e'))
+let () = assert (huffman_decode_one [true; true; false; true; false; true; false] tree1 = Some ([false; true; false; true; false], 'F'))
+let () = assert (huffman_decode_one [false] tree2 = None)
+let () = assert (huffman_decode_one [false; false; false] tree3 = Some ([], 'e'))
+let () = assert (huffman_decode [] tree1 = Some [])
+let () = assert (huffman_decode [true; true; false; true; false; true; false] tree1 = Some ['F'; 'A'; 'D'])
+let () = assert (huffman_decode [true; true; false; true; false] tree1 = None)
+let () = assert (huffman_decode [true; true; true; false; false; false; true; true; false; false; true; false] tree2 = Some ['2'; '0'; '4'; '1'])
+let () = assert (huffman_decode_string [true; true; false; true; false; true; false] tree1 = Some "FAD")
+let () = assert (huffman_decode_string [true; true; true; false; false; false; true; true; false; false; true; false] tree2 = Some "2041")
+let () = assert (huffman_decode_string [false; true; false; true; true; true; false; true; true; true; false; true; true; true; true; false; false; true; true; true; true; true; true; false; true; true; false; false; true; true; false; false; true; false; true; true; true; true; true; false; false; false; false; true; false; true; false; true; false; false; true; true; true; true] tree3 = Some "good job!")
+let () = assert (expr_has_type (Add (Lit (Int 2), Lit (Int 3))) IntTy = true)
+let () = assert (expr_has_type (Add (Lit (Int 2), Lit (Int 3))) BoolTy = false)
+let () = assert (expr_has_type (If (Lit (Bool true), Lit (Int 0), Lit (Bool false))) BoolTy = false)
+let () = assert (expr_has_type (If (Lit (Bool false), Lit (Int 0), Lit (Bool false))) BoolTy = false)
+let () = assert (expr_has_type (If (Lit (Bool true), Lit (Int 0), Lit (Bool false))) IntTy = false)
+let () = assert (expr_has_type (If (Lit (Bool false), Lit (Int 0), Lit (Bool false))) IntTy = false)
+let () = assert (expr_has_type (If (Lit (Bool false), Lit (Bool true), Lit (Bool false))) BoolTy = true)
+let () = assert (expr_has_type (If (Lit (Bool false), Lit (Int 1), Lit (Int 2))) IntTy = true)
