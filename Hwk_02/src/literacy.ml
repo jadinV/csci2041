@@ -29,7 +29,7 @@ let rec map_lookup (map: ('key, 'value) maptree) (key: 'key) : 'value option =
   match map with
   | End -> None
   | Node (_, k, v, _) when k = key -> Some v
-  | Node (left, _, _, right) -> if map_lookup left key <> None
+  | Node (left, k, _, right) -> if map_lookup left key <> None && k >= key 
                                 then map_lookup left key
                                 else map_lookup right key
 
