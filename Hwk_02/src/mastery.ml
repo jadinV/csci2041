@@ -72,17 +72,27 @@ let rec eval (e: expr) : value =
 
 let expr_has_type (ex: expr) (typ: ty) : bool =
   match ex with
-  | Add (l, r) | Sub (l, r) | Mul (l, r) -> (match (eval l, eval r) with
+  | Add (l, r) | Sub (l, r) | Mul (l, r) -> (match 
+                                            (try eval l with Failure _ -> Bool false),
+                                            (try eval r with Failure _ -> Bool false)
+                                            with
                                             | Int  _, Int _ -> typ = IntTy
                                             | _, _ -> false)
-  | Lte (l, r) | Eq (l, r) -> (match (eval l, eval r) with
+  | Lte (l, r) | Eq (l, r) -> (match 
+                              (try eval l with Failure _ -> Bool false),
+                              (try eval r with Failure _ -> Bool false)
+                              with
                                | Int  _, Int _ -> typ = BoolTy
                                | _, _ -> false)
   | Lit x -> (match x with
               | Int _ -> typ = IntTy
               | Bool _ -> typ = BoolTy)
-  | If (_, t, el) -> (match (eval t, eval el) with
+  | If (_, t, el) -> (match
+                      (try eval t with _ -> Int (-4611686010000000000)),
+                      (try eval el with _ -> Int (-4611686010000000000))
+                      with
+                      | Int (-4611686010000000000), _ -> false
+                      | _, Int (-4611686010000000000) -> false
                       | Int _, Int _ -> typ = IntTy
                       | Bool _, Bool _ -> typ = BoolTy
                       | _, _ -> false)
-
