@@ -65,9 +65,11 @@ let rec eval (e: expr) : value =
   | Eq (l, r) -> (match (eval l, eval r) with
                   | Int left, Int right -> Bool (left = right)
                   | _, _ -> raise (Failure "type error"))
-  | If (i, t, el) -> (match (eval i) with
-                      | Bool ifCond when ifCond -> eval t
-                      | Bool _ -> eval el
+  | If (i, t, el) -> (match (eval i, eval t, eval el) with
+                      | Bool ifCond, Int _, Int _ when ifCond -> eval t
+                      | Bool ifCond, Bool _, Bool _ when ifCond -> eval t
+                      | Bool _, Int _, Int _ -> eval el
+                      | Bool _, Bool _, Bool _ -> eval el
                       | _ -> raise (Failure "type error"))
 
 let expr_has_type (ex: expr) (typ: ty) : bool =
@@ -87,12 +89,15 @@ let expr_has_type (ex: expr) (typ: ty) : bool =
   | Lit x -> (match x with
               | Int _ -> typ = IntTy
               | Bool _ -> typ = BoolTy)
-  | If (_, t, el) -> (match
+  | If (i, t, el) -> (match
+                      (try eval i with _ -> Int (-4611686010000000000)),
                       (try eval t with _ -> Int (-4611686010000000000)),
                       (try eval el with _ -> Int (-4611686010000000000))
                       with
-                      | Int (-4611686010000000000), _ -> false
-                      | _, Int (-4611686010000000000) -> false
-                      | Int _, Int _ -> typ = IntTy
-                      | Bool _, Bool _ -> typ = BoolTy
-                      | _, _ -> false)
+                      | Int (-4611686010000000000), _, _ -> false
+                      | _, Int (-4611686010000000000), _ -> false
+                      | _, _, Int (-4611686010000000000) -> false
+                      | Int _, _, _ -> false
+                      | _, Int _, Int _ -> typ = IntTy
+                      | _, Bool _, Bool _ -> typ = BoolTy
+                      | _, _, _ -> false)

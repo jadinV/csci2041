@@ -26,3 +26,6 @@ let () = assert (expr_has_type (If (Lit (Bool false), Mul ((Lit (Int 285)), (Lit
 let () = assert (expr_has_type (If (Lit (Bool false), Lit (Bool false), Mul ((Lit (Int 285)), (Lit (Bool false))))) BoolTy = false)
 let () = assert (expr_has_type (If (Lit (Bool false), Lit (Int 3), Mul ((Lit (Int 285)), (Lit (Bool false))))) IntTy = false)
 let () = assert (expr_has_type (If (Lit (Bool false), Mul ((Lit (Int 285)), (Lit (Bool false))), Lit (Int 213))) IntTy = false)
+let () = assert (expr_has_type (If ((If ((Lte ((Lit (Bool false)), (Sub ((Lit (Bool false)), (Lit (Bool false)))))), (Lit (Int 0)), (If ((Lit (Int 0)), (Lit (Int 0)), (Lte ((Lit (Bool false)), (Lit (Bool false)))))))), (Lit (Int 1)), (Lit (Int (-1))))) IntTy = false)
+let () = assert (expr_has_type (If ((Lit (Int 0)), (Lit (Int 1)), (Lit (Int 1)))) IntTy = false)
+let () = assert (expr_has_type (Mul ((If ((Lit (Bool true)), (Lit (Int 1)), (Sub ((Lit (Bool false)), (Lit (Bool false)))))), (Lit (Int 0)))) IntTy = false)
