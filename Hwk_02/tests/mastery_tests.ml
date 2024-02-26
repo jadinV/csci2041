@@ -13,6 +13,8 @@ let () = assert (huffman_decode_string [true; true; true; false; false; false; t
 let () = assert (huffman_decode_string [false; true; false; true; true; true; false; true; true; true; false; true; true; true; true; false; false; true; true; true; true; true; true; false; true; true; false; false; true; true; false; false; true; false; true; true; true; true; true; false; false; false; false; true; false; true; false; true; false; false; true; true; true; true] tree3 = Some "good job!")
 let () = assert (expr_has_type (Add (Lit (Int 2), Lit (Int 3))) IntTy = true)
 let () = assert (expr_has_type (Add (Lit (Int 2), Lit (Int 3))) BoolTy = false)
+let () = assert (expr_has_type (Lte (Lit (Int 2), Lit (Int 2))) BoolTy = true)
+let () = assert (expr_has_type (Eq (Lit (Int 2), Lit (Int 2))) BoolTy = true)
 let () = assert (expr_has_type (If (Lit (Bool true), Lit (Int 0), Lit (Bool false))) BoolTy = false)
 let () = assert (expr_has_type (If (Lit (Bool false), Lit (Int 0), Lit (Bool false))) BoolTy = false)
 let () = assert (expr_has_type (If (Lit (Bool true), Lit (Int 0), Lit (Bool false))) IntTy = false)

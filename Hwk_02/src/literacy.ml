@@ -31,7 +31,9 @@ let rec map_lookup (map: ('key, 'value) maptree) (key: 'key) : 'value option =
   | Node (_, k, v, _) when k = key -> Some v
   | Node (left, k, _, right) -> if map_lookup left key <> None && k >= key 
                                 then map_lookup left key
-                                else map_lookup right key
+                                else if map_lookup right key <> None && k < key
+                                then map_lookup right key
+                                else None
 
 let rec map_insert (k: 'key) (v: 'value) (map: ('key, 'value) maptree) : ('key, 'value) maptree =
   match map with
