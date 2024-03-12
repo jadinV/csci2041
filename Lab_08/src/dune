@@ -1,0 +1,4 @@
+(library
+ (modules lab_08 io)
+ (name lab_08)
+)
