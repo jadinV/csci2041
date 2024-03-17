@@ -45,7 +45,7 @@ let sum_tree (tr: int tree) : int =
 let product_tree (tr: int tree) : int =
   reduce_tree 1 (fun l v r -> l * v * r) tr
 
-let leghts_tree (tr: string tree) : int tree =
+let legths_tree (tr: string tree) : int tree =
   map_tree String.length tr
 
 let tree1 = Fork (
