@@ -32,9 +32,11 @@ let max_pairs (pairs: (int * int) list) : int =
   match pairs with
   | [] -> raise (Failure "invalid input to max_pairs")
   | (x, y)::[] -> if x > y then x else y
-  | x::xs -> let (y::ys) = List.map (fun (x, y) -> if x > y then x else y)
-                                 pairs
-             in List.fold_left (fun x z -> if x > z then x else z) y ys
+  | x::xs -> let list = List.map (fun (x, y) -> if x > y then x else y)
+                                    pairs
+             in match list with
+             | [] -> raise (Failure "invalid input to max_pairs")
+             | y::ys -> List.fold_left (fun x z -> if x > z then x else z) y ys
 
 let max_opt (nums: int list) : int option =
   match nums with
@@ -45,6 +47,8 @@ let max_pairs_opt (pairs: (int * int) list) : int option =
   match pairs with
   | [] -> None
   | (x, y)::[] -> if x > y then Some x else Some y
-  | x::xs -> let (y::ys) = List.map (fun (x, y) -> if x > y then x else y)
-                                 pairs
-             in Some (List.fold_left (fun x z -> if x > z then x else z) y ys)
+  | x::xs -> let list = List.map (fun (x, y) -> if x > y then x else y)
+                                    pairs
+             in match list with
+             | [] -> raise (Failure "invalid input to max_pairs")
+             | y::ys -> Some (List.fold_left (fun x z -> if x > z then x else z) y ys)
