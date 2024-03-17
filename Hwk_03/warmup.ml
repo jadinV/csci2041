@@ -21,6 +21,8 @@ let negate_odd (nums: int list) : int list =
               else x * (-1))
     nums
 
+let char_cons (x : char) (str : string) : string = (String.make 1 x) ^ str
+
 let string_of_chars (chrs: char list) : string =
   let char_cons (x : char) (str : string) : string = (String.make 1 x) ^ str
   in List.fold_right char_cons chrs ""
