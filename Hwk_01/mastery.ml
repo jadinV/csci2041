@@ -25,24 +25,26 @@ let rec product_of_primes (nums: int list) : int =
   | h::t when is_prime_faster h -> h * product_of_primes t
   | h::t -> product_of_primes t
 
+let rec max_helper (pairs: (string * int) list) (max: int) : int =
+  match pairs with
+  | [] -> max
+  | h::t -> let (s, n) = h in if n > max
+                           then max_helper t n
+                           else max_helper t max
+
 let max_int_string_pairs (lst: (string * int) list) : (string * int) list =
-  let rec helper (pairs: (string * int) list) (max: int) : int =
-    match pairs with
-    | [] -> max
-    | h::t -> let (s, n) = h in if n > max
-                             then helper t n
-                             else helper t max
-  in let first_num = 
+  let rec picker (lst: (string * int) list) (max: int) =
     match lst with
-    | [] -> 0
-    | (s, n)::t -> n
-  in let biggest = helper lst first_num
-  in let rec picker (lst: (string * int) list) =
+    | [] -> raise (Failure "invalid input to max_int_string_pairs")
+    | (s, n)::[] -> if n == max
+                     then [(s, n)]
+                    else []
+    | (s, n)::t -> if n == max
+                    then picker t max @ [(s, n)]
+                   else picker t max
+  in let first =
     match lst with
-   | [] -> raise (Failure "invalid input to max_int_string_pairs")
-   | (s, n)::[] -> if n == biggest
-                   then [(s, n)]
-                   else []
-   | (s, n)::t when n == biggest -> picker t @ [(s, n)]
-   | h::t -> picker t
-  in picker lst
+    | (_, n)::_ -> n
+    | _ -> 0
+  in let biggest = max_helper lst first
+  in picker lst biggest
