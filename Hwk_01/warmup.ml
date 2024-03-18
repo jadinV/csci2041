@@ -5,10 +5,12 @@ let cube (num: int) : int =
   num * num * num
 
 let rec last_digit (num: int) : int =
-  match num with
-  | x when x >= 0 && x < 10 -> x
-  | x when x > 10 -> last_digit (x mod 10)
-  | x when x < 0 -> last_digit (x * -1)
+  if (x >= 0 && x < 10)
+    then x
+  else if (x > 10)
+    then last_digit (x mod 10)
+  else if (x < 0)
+    then last_digit (x * -1)
 
 let rec sum (nums: int list) : int =
   match nums with
