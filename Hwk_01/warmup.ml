@@ -7,7 +7,7 @@ let cube (num: int) : int =
 let rec last_digit (num: int) : int =
   if (x >= 0 && x < 10)
     then x
-  else if (x > 10)
+  else if (x >= 10)
     then last_digit (x mod 10)
   else if (x < 0)
     then last_digit (x * -1)
