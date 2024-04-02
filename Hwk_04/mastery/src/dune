@@ -1,0 +1,17 @@
+(library
+ (name data)
+ (modules data)
+)
+
+(library
+ (name mapImpl)
+ (modules mapImpl)
+ (libraries data)
+)
+
+(library
+ (name map)
+ (modules map)
+ (libraries mapImpl data)
+)
+

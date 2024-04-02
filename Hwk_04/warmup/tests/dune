@@ -1,0 +1,4 @@
+(library
+ (libraries set)
+ (modules tests)
+ (name tests))

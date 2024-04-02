@@ -1,0 +1,10 @@
+(library
+ (name mapImpl)
+ (modules mapImpl)
+)
+
+(library
+ (name map)
+ (modules map)
+ (libraries mapImpl)
+)

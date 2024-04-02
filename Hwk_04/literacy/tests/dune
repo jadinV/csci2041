@@ -1,0 +1,4 @@
+(library
+ (libraries mapImpl map)
+ (modules tests)
+ (name tests))
