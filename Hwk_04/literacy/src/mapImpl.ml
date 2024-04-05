@@ -23,14 +23,7 @@ module TreeMapImpl = struct
                   | Node of ('k, 'v) t * 'k * 'v * ('k, 'v) t
 
   let empty = Empty
-
-  let rec helper ky tre =
-    match tre with
-    | Empty -> None
-    | Node (_, key, v, _) when key = ky -> Some v
-    | Node (l, key, _, _) when key < ky -> helper ky l
-    | Node (_, _, _, r) -> helper ky r
-
+  
   let rec lookup k tr = 
     match tr with
     | Empty -> None
