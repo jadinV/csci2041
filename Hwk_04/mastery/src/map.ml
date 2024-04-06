@@ -15,7 +15,7 @@ end
 (* Complete specification of the signature definition in the two
    functor declarations below.
 *)
-module ListMap (E: Eq) :  (* fill in signature information *)  = ListMapImpl (E)
+module ListMap (E: Eq) : (S with type key = E.t) = ListMapImpl (E)
 
-module TreeMap (O: Ord) :  (* fill in signature information *)  = TreeMapImpl (O)
+module TreeMap (O: Ord) : (S with type key = O.t) = TreeMapImpl (O)
 
