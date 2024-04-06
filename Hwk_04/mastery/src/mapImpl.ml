@@ -37,8 +37,8 @@ module TreeMapImpl (O: Ord) = struct
   let rec lookup k tr = 
     match tr with
     | Empty -> None
-    | Node (_, key, v, _) when key = k -> Some v
-    | Node (l, key, _, _) when key > k -> lookup k l
+    | Node (_, key, v, _) when O.eq key k -> Some v
+    | Node (l, key, _, _) when O.cmp key k > 0 -> lookup k l
     | Node (_, _, _, r) -> lookup k r
 
   let rec add ky value tre =
