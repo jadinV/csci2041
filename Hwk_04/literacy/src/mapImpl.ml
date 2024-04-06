@@ -48,7 +48,7 @@ module TreeMapImpl = struct
 
   let rec remove k tr =
     match tr with
-    | Empty -> raise (Failure ("No key with value k"))
+    | Empty -> Empty
     | Node (_, ky, _, _) when k = ky -> (match tr with
                                          | Empty -> raise (Failure "How did you even get here?")
                                          | Node (Empty, _, _, Empty) -> Empty
