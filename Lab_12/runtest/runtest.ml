@@ -1,0 +1,4 @@
+open Tests
+
+let () =
+  tests ()
