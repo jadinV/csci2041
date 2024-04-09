@@ -33,7 +33,40 @@ and expr
 
 let rec unparse (e: expr) : string =
   match e with
+  | Val x -> (match x with
+              | Int i -> string_of_int i
+              | Bool b -> string_of_bool b
+             )
   | Add (e1, e2) ->
-     "(" ^ unparse e1 ^ " + " ^ unparse e2 ^ ")"
-
-  | _ -> raise (Failure "finish this function")
+      "(" ^ unparse e1 ^ " + " ^ unparse e2 ^ ")"
+  | Sub (e1, e2) ->
+      "(" ^ unparse e1 ^ " - " ^ unparse e2 ^ ")"
+  | Mul (e1, e2) ->
+      "(" ^ unparse e1 ^ " * " ^ unparse e2 ^ ")"
+  | Div (e1, e2) ->
+      "(" ^ unparse e1 ^ " / " ^ unparse e2 ^ ")"
+  | Neg (e1) ->
+      "( - " ^ unparse e1 ^ ")"
+  | Lt (e1, e2) ->
+      "(" ^ unparse e1 ^ " < " ^ unparse e2 ^ ")"
+  | Gt (e1, e2) ->
+      "(" ^ unparse e1 ^ " > " ^ unparse e2 ^ ")"
+  | Eq (e1, e2) ->
+      "(" ^ unparse e1 ^ " = " ^ unparse e2 ^ ")"
+  | And (e1, e2) ->
+      "(" ^ unparse e1 ^ " && " ^ unparse e2 ^ ")"
+  | Or (e1, e2) ->
+      "(" ^ unparse e1 ^ " || " ^ unparse e2 ^ ")"
+  | Not e1 ->
+      "(not " ^ unparse e1 ^ ")"
+  | Let (str, e1, e2) ->
+      "(let " ^ str ^ " = " ^ unparse e1 ^ " in " ^ unparse e2 ^ ")"
+  | Id str -> str
+  | Lam (str, e1) ->
+      "(fun " ^ str ^ " -> " ^ unparse e1 ^ ")"
+  | App (e1, e2) -> 
+      "(" ^ unparse e1 ^ " " ^ unparse e2 ^ ")"
+  | LetRec (str, e1, e2) ->
+      "(let rec " ^ str ^ " = " ^ unparse e1 ^ " in " ^ unparse e2 ^ ")"
+  | If (e1, e2, e3) ->
+      "(if " ^ unparse e1 ^ " then " ^ unparse e2 ^ " else " ^ unparse e3 ^ ")"
