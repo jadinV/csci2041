@@ -16,4 +16,7 @@ This proof uses induction on the `instr list` type, so the principle of inductio
 for all `lst: instr list`, `P(lst)` if
 
 - `P([])`
-- `P()
+- for all `hd : 'a` and `tl : 'a list`, `P(tl) => P(hd :: tl)`
+
+### 2. Base case to Prove
+

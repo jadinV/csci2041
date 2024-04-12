@@ -7,7 +7,7 @@ for all `xs : 'a list`, `P(xs)` if
 - `P([])`
 - for all `hd : 'a` and `tl : 'a list`, `P(tl) => P(hd :: tl)`
 
-### 2. Base case to Prove
+### 2. Base Case to Prove
 
 `sum [] = sum_fold []`
 
@@ -80,7 +80,7 @@ for all `xs : 'a list`, `P(xs)` if
 - `P([])`
 - for all `hd : 'a` and `tl : 'a list`, `P(tl) => P(hd :: tl)`
 
-### 2. Base case to Prove
+### 2. Base Case to Prove
 
 `map f (map g []) = map (fun x -> f (g x)) []`
 
@@ -145,7 +145,7 @@ for all `xs : int list`, `ys : int list`, `P(xs, ys)` if
 - `P([], ys)`
 - for all `hd : int` and `tl : int list`, `P    (tl) => P(hd :: tl, ys)`
 
-### 2. Base case to Prove
+### 2. Base Case to Prove
 
 `prod (app [] l2) = prod [] * prod l2`
 

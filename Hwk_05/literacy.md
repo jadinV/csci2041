@@ -7,7 +7,7 @@ for all `xs : 'a nonempty`, `P(xs)` if
 - `P(One hd)`
 - for all `hd : 'a` and `tl : 'a nonempty`, `P(tl) => P(Cons hd tl)`
 
-### 2. Base case to Prove
+### 2. Base Case to Prove
 
 `app One m (app Cons (n, l2) Cons (p, l3)) = app (app One m Cons (n, l2)) Cons (p, l3)`
 
@@ -64,7 +64,7 @@ for all `xs : 'a nonempty`, `P(xs)` if
 - `P(One hd)`
 - for all `hd : 'a` and `tl : 'a nonempty`, `P(tl) => P(Cons hd tl)`
 
-### 2. Base case to Prove
+### 2. Base Case to Prove
 
 `rev (app One m Cons (n, l2)) = app (rev Cons (n, l2)) (rev One m)`
 
