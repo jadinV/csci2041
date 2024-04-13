@@ -26,11 +26,11 @@ for all `lst: instr list`, `P(lst)` if
 
 `exec (app [] code2) stack`
 
-- by def of app
+- by definition of app
 
 `= exec code2 stack`
 
-- by def of exec
+- by definition of exec
 
 `= exec code2 (exec [] stack)`
 
@@ -46,11 +46,11 @@ for all `lst: instr list`, `P(lst)` if
 
 `exec (app inst1::insts1 inst2::insts2) stack`
 
-- by def of app
+- by definition of app
 
 `= exec (inst1 :: (app insts1 inst2::insts2)) stack`
 
-- by def of exec
+- by definition of exec
 
 `= exec (app insts1 inst2::insts2) (step inst1 stack)`
 
@@ -58,7 +58,7 @@ for all `lst: instr list`, `P(lst)` if
 
 `= exec inst2::insts2 (exec insts1 (step inst1 stack))`
 
-- by def of exec
+- by definition of exec
 
 `= exec inst2::insts2 (exec inst1::insts1 stack)`
 
@@ -80,23 +80,23 @@ for all `ex : expr`, `P(ex)` if
 
 `exec (compile Num x) stack`
 
-- by def of compile 
+- by definition of compile 
 
 `= exec ([Push x]) stack`
 
-- by def of exec
+- by definition of exec
 
 `= exec [] (step [Push x] stack)`
 
-= by def of step
+= by definition of step
 
 `= exec [] (x :: stack)`
 
-- by def of exec
+- by definition of exec
 
 `= x :: stack`
 
-- by def of eval
+- by definition of eval
 
 `= eval Num x :: stack`
 
@@ -114,7 +114,7 @@ for all `ex : expr`, `P(ex)` if
 
 `exec (compile Neg e) stack`
 
-- by def of compile
+- by definition of compile
 
 `= exec (app (compile e) [Unop negate]) stack`
 
@@ -126,23 +126,23 @@ for all `ex : expr`, `P(ex)` if
 
 `= exec [Unop negate] (eval e :: stack)`
 
-- by def of exec
+- by definition of exec
 
 `= step Unop negate (eval e :: stack)`
 
-- by def of step
+- by definition of step
 
 `= do_unop negate (eval e :: stack)`
 
-- by def of do_unop
+- by definition of do_unop
 
 `= negate (eval e) :: stack`
 
-- by def of negate
+- by definition of negate
 
 `= -(eval e) :: stack`
 
-- by def of eval
+- by definition of eval
 
 `= eval Neg e :: stack`
 
@@ -151,7 +151,7 @@ for all `ex : expr`, `P(ex)` if
 
 `exec (compile Add (e1, e2)) stack`
 
-- by def of compile
+- by definition of compile
 
 `= exec (app (compile e1) (app (compile e2) [Binop (+)])) stack`
 
@@ -163,15 +163,15 @@ for all `ex : expr`, `P(ex)` if
 
 `= exec [Binop (+)] (exec (app (compile e1) (compile e2)) stack)`
 
-- by def of exec
+- by definition of exec
 
 `= exec [] (step Binop (+) (exec (app (compile e1) (compile e2)) stack))`
 
-- by def of exec
+- by definition of exec
 
 `= step Binop (+) (exec (app (compile e1) (compile e2)) stack)`
 
-- by def of step
+- by definition of step
 
 `= do_binop (+) (exec (app (compile e1) (compile e2)) stack)`
 
@@ -187,11 +187,11 @@ for all `ex : expr`, `P(ex)` if
 
 `= do_binop (+) (eval e2 :: eval e1 :: stack)`
 
-- by def of do_binop
+- by definition of do_binop
 
 `= (+) (eval e2) (eval e1) :: stack`
 
-- by def of (+)
+- by definition of (+)
 
 `= eval e2 + eval e1 :: stack`
 
@@ -199,7 +199,7 @@ for all `ex : expr`, `P(ex)` if
 
 `= eval e1 + eval e2 :: stack`
 
-- by def of eval
+- by definition of eval
 
 `= eval Add (e1, e2) :: stack`
 
@@ -221,7 +221,31 @@ for all `ex : expr`, `P(ex)` if
 
 `run (compile Num x)`
 
-- by some bullshit
+- by definition of compile
+
+`= run ([Push x])`
+
+- by definition of run
+
+`= get_one (exec [Push x] [])`
+
+- by definition of exec
+
+`= get_one (exec [] (step Push x []))`
+
+- by definition of exec
+
+`= get_one (step Push x [])`
+
+- by definition of step
+
+`= get_one (x::[])`
+
+- by definition of get_one
+
+`= x`
+
+- by definition of eval
 
 `= eval Num x`
 
@@ -239,7 +263,47 @@ for all `ex : expr`, `P(ex)` if
 
 `run (compile Neg e)`
 
-- by some bullshit
+- by definition of compile
+
+`= run (app (compile e) [Unop negate])`
+
+- by definition of run
+
+`= get_one (exec (app (compile e) [Unop negate]) [])`
+
+- by Appending instruction lists
+
+`= get_one (exec [Unop negate] (exec (compile e) []))`
+
+- by Compile is correct with respect to exec
+
+`= get_one (exec [Unop negate] (eval e :: []))`
+
+- by definition of exec
+
+`= get_one (exec [] (step (Unop negate) (eval e :: [])))`
+
+- by definition of step
+
+`= get_one (exec [] (do_unop negate (eval e :: []))`
+
+- by definition of exec
+
+`= get_one (do_unop negate (eval e :: []))`
+
+- by definition of do_unop
+
+`= get_one (negate eval e :: [])`
+
+- by definition of get_one
+
+`= negate eval e`
+
+- by definition of negate
+
+`= -(eval e)`
+
+- by definition of eval
 
 `= eval Neg e`
 
@@ -247,6 +311,62 @@ for all `ex : expr`, `P(ex)` if
 
 `run (compile Add (e1, e2))`
 
-- by some bullshit
+- by definition of run
+
+`= get_one (exec compile Add (e1, e2) [])`
+
+- by definition of compile
+
+`= get_one (exec app (compile e1) (app (compile e2) [Binop (+)]) [])`
+
+- by Prove the associativity of append for nonempty lists
+
+`= get_one (exec app(app (compile e1 compile e2) [Binop (+)]) [])`
+
+- by Appending instruction lists
+
+`= get_one (exec [Binop (+)] (exec (app (compile e1 compile e2)) []))`
+
+- by definition of exec
+
+`= get_one (exec [] (step Binop (+) (exec (app (compile e1 compile e2)) [])))`
+
+- by definition of exec
+
+`= get_one (step Binop (+) (exec (app (compile e1 compile e2)) []))`
+
+- by definition of step
+
+`= get_one (do_binop (+) (exec (app (compile e1 compile e2)) []))`
+
+- by Appending instruction lists
+
+`= get_one (do_binop (+) (exec compile e2 (exec compile e1 [])))`
+
+- by Compile is correct with respect to exec
+
+`= get_one (do_binop (+) (exec compile e2 (eval e1 :: [])))`
+
+- by Compile is correct with respect to exec
+
+`= get_one (do_binop (+) eval e2 :: (eval e1 :: []))`
+
+- by definition of do_binop
+
+`= get_one ((+) eval e2 eval e1 :: [])`
+
+- by definition of (+)
+
+`= get_one ((eval e2 + eval e1) :: [])`
+
+- by associativity of +
+
+`= get_one ((eval e1 + eval e2) :: [])`
+
+- by definition of get_one
+
+`= eval e1 + eval e2`
+
+- by definition of eval
 
 `= eval Add (e1, e2)`

@@ -15,15 +15,15 @@ for all `xs : 'a nonempty`, `P(xs)` if
 
 `app One m (app Cons (n, l2) Cons (p, l3))`
 
-- by def of app
+- by definition of app
 
 `= Cons (m, app Cons (n, l2) Cons (p, l3))`
 
-- by def of app
+- by definition of app
 
 `= app (Cons (m, Cons (n, l2))) Cons (p, l3)`
 
-- by def of app
+- by definition of app
 
 `= app (app One m Cons (n, l2)) Cons (p, l3)`
 
@@ -39,7 +39,7 @@ for all `xs : 'a nonempty`, `P(xs)` if
 
 `app Cons (m, l1) (app Cons (n, l2) Cons (p, l3))`
 
-- by def of app
+- by definition of app
 
 `= Cons (m, app l1 (app Cons (n, l2) Cons (p, l3)))`
 
@@ -47,11 +47,11 @@ for all `xs : 'a nonempty`, `P(xs)` if
 
 `= Cons (m, app (app l1 Cons (n, l2))) Cons (p, l3)`
 
-- by def of app
+- by definition of app
 
 `= app (Cons (m, app l1 Cons (n, l2))) Cons (p, l3)`
 
-- by def of app
+- by definition of app
 
 `= app (app Cons (m, l1) Cons (n, l2)) Cons (p, l3)`
 
@@ -72,23 +72,23 @@ for all `xs : 'a nonempty`, `P(xs)` if
 
 `rev (app One m Cons (n, l2))`
 
-- by def of app
+- by definition of app
 
 `= rev (Cons (m, Cons (n, l2)))`
 
-- by def of rev
+- by definition of rev
 
 `= app (rev Cons (n, l2)) One m`
 
-- by def of rev
+- by definition of rev
 
 `= app (app (rev l2) One n) One m`
 
-- by def of rev
+- by definition of rev
 
 `= app (rev Cons (n, l2)) One m`
 
-- by def of rev
+- by definition of rev
 
 `= app (rev Cons (n, l2)) (rev One m)`
 
@@ -104,11 +104,11 @@ for all `xs : 'a nonempty`, `P(xs)` if
 
 `rev (app Cons (m, l1) Cons (n, l2))`
 
-- by def of app
+- by definition of app
 
 `= rev (Cons (m, app l1 Cons (n, l2)))`
 
-- by def of rev
+- by definition of rev
 
 `= app (rev (app l1 Cons (n, l2))) One m`
 
@@ -116,7 +116,7 @@ for all `xs : 'a nonempty`, `P(xs)` if
 
 `= app (app ((rev Cons (n, l2)) rev l1)) One m`
 
-- by def of rev'
+- by definition of rev'
 
 `= app (app ((app (rev l2) One n) rev l1)) One m`
 
@@ -124,11 +124,11 @@ for all `xs : 'a nonempty`, `P(xs)` if
 
 `= app (app (rev l2) One n) (app (rev l1) One m)`
 
-- by def of rev
+- by definition of rev
 
 `= app (rev Cons (n, l2)) (app (rev l1) One m)`
 
-- by def of rev
+- by definition of rev
 
 `= app (rev Cons (n, l2)) (rev Cons (m, l1))`
 

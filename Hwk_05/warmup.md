@@ -1,4 +1,4 @@
-## Prove that sum is equivalently defined with folds and recursion
+## Prove that sum is equivalently definitionined with folds and recursion
 
 ### 1. Principle of Induction
 
@@ -15,15 +15,15 @@ for all `xs : 'a list`, `P(xs)` if
 
 `sum []`
 
-- by def of sum
+- by definition of sum
 
 `= 0`
 
-- by def of foldr
+- by definition of foldr
 
 `= foldr (+) 0 []`
 
-- by def of sum_fold
+- by definition of sum_fold
 
 `= sum_fold []`
 
@@ -43,11 +43,11 @@ for all `xs : 'a list`, `P(xs)` if
 
  `= sum (hd::tl)`
 
- - by def of sum
+ - by definition of sum
 
  `= hd + sum tl`
 
- - by def of (+)
+ - by definition of (+)
 
  `= (+) hd (sum tl)`
 
@@ -55,11 +55,11 @@ for all `xs : 'a list`, `P(xs)` if
 
  `= (+) hd (sum_fold tl)`
 
- - by def of sum_fold
+ - by definition of sum_fold
 
 `= (+) hd (foldr (+) 0 tl)`
 
- - by def of foldr
+ - by definition of foldr
 
 `= foldr (+) 0 (hd::tl)`
 
@@ -67,7 +67,7 @@ for all `xs : 'a list`, `P(xs)` if
 
 `= foldr (+) 0 lst`
 
- - by def of sum_fold
+ - by definition of sum_fold
 
  `= sum_fold xs`
 
@@ -88,15 +88,15 @@ for all `xs : 'a list`, `P(xs)` if
 
 `map f (map g [])`
  
- - by def of map
+ - by definition of map
 
  `= map f ([])`
 
- - by def of map
+ - by definition of map
 
  `= []`
 
- - by def of map
+ - by definition of map
 
 `= map (fun x -> f (g x)) []`
 
@@ -116,11 +116,11 @@ for all `xs : 'a list`, `P(xs)` if
 
  `= map f (map g (hd::tl))`
 
- - by def of map
+ - by definition of map
 
  `= map f (g hd :: map g tl)`
 
- - by def of map
+ - by definition of map
 
  `= f (g hd) :: map f (map g tl)`
 
@@ -128,7 +128,7 @@ for all `xs : 'a list`, `P(xs)` if
 
  `= f (g hd) :: map (fun x -> f (g x)) tl`
 
- - by def of map
+ - by definition of map
 
 `= map (fun x -> f (g x)) hd::tl`
 
@@ -153,7 +153,7 @@ for all `xs : int list`, `ys : int list`, `P(xs, ys)` if
 
 `prod (app [] l2)`
 
-- by def of app
+- by definition of app
 
 `= prod l2`
 
@@ -161,7 +161,7 @@ for all `xs : int list`, `ys : int list`, `P(xs, ys)` if
 
 `= 1 * prod l2`
 
-- by def of prod
+- by definition of prod
 
 `= prod [] * prod l2`
 
@@ -181,18 +181,18 @@ for all `xs : int list`, `ys : int list`, `P(xs, ys)` if
 
 `= prod (app hd::tl l2)`
 
-- by def of app
+- by definition of app
 
 `= prod (hd :: app tl l2)`
 
-- by def of prod
+- by definition of prod
 
 `= hd * prod (app tl l2)`
 
-- by def of inductive hypothesis
+- by definition of inductive hypothesis
 
 `= hd * prod tl * prod l2`
 
-- by def of prod
+- by definition of prod
 
 `=  prod l1 * prod l2`
