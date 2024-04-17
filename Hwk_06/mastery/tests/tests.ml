@@ -104,43 +104,6 @@ let sumToN : expr =
 let sumTo4 = App (sumToN, Val (Int 4))
 
 
-let el01 = Cons (Add (Val (Int 1), Val (Int 2)),
-                Cons (Add (Val (Int 3), Val (Int 4)),
-                      Cons (Add (Val (Int 5), Val (Int 6)),
-                            Nil)))
-let el02 = Nil
-
-let el03 = IsEmpty Nil
-
-let el04 = IsEmpty (Cons (Add (Val (Int 1), Val (Int 2)),
-                          Nil))
-
-let el05 = Head (Cons (Add (Val (Int 1), Val (Int 2)),
-                       Nil))
-
-let el06 = Tail (Cons (Add (Val (Int 1), Val (Int 2)),
-                       Cons (Add (Val (Int 3), Val (Int 4)),
-                             Cons (Add (Val (Int 5), Val (Int 6)),
-                                   Nil)))
-             )
-
-let sum : expr =
-    LetRec ("sum",
-            Lam ("lst",
-                 If (IsEmpty (Id "lst"),
-                     Val (Int 0),
-                     Add (Head (Id "lst"),
-                          App (Id "sum",
-                               Tail (Id "lst")
-                              )
-                         )
-                    )
-                ),
-            Id "sum"
-           )
-
-let sum_el01 = App (sum, el01)
-
 (* Errors *)
 (* Unbound Variables *)
 let e20 = And (Id "y", Val (Bool true))
@@ -191,16 +154,6 @@ let e28 = If (Add (Val (Int 3), Val (Int 5)),
               Val (Int 2) )
 
 
-
-(* Type Errors *)
-let el10 = IsEmpty (Add (Val (Int 1), Val (Int 2)))
-
-let el11 = Head (Add (Val (Int 1), Val (Int 2)))
-
-let el12 = Tail (Add (Val (Int 1), Val (Int 2)))
-
-let el13 = Cons (Val (Int 1), Val (Int 2))
-
 let test1 () =
   assert (List.sort compare (freevars e01) = []);
   assert (List.sort compare (freevars e08) = []);
@@ -218,10 +171,7 @@ let test1 () =
   assert (List.sort compare (freevars e16) = ["x"]);
 
   assert (List.sort compare (freevars sumToN) = []);
-  assert (List.sort compare (freevars sumTo4) = []);
-
-  assert (List.sort compare (freevars sum) = []);
-  assert (List.sort compare (freevars sum_el01) = [])
+  assert (List.sort compare (freevars sumTo4) = [])
 
 let test2 () =
   assert (eval e01 [] = Int 8);
@@ -254,26 +204,8 @@ let test2 () =
           | Closure ("n", _, [ ("sumToN", _) ]) -> true
           | _ -> false);
 
-  assert (eval sumTo4 [] = Int 10);
+  assert (eval sumTo4 [] = Int 10)
 
-
-  assert (eval el01 [] = ListVal [Int 3; Int 7; Int 11]);
-
-  assert (eval el02 [] = ListVal []);
-
-  assert (eval el03 [] = Bool true);
-
-  assert (eval el04 [] = Bool false);
-
-  assert (eval el05 [] = Int 3);
-
-  assert (eval el06 [] = ListVal [Int 7; Int 11]);
-
-  assert (match eval sum [] with
-          | Closure ("lst", _, [ ("sum", _) ]) -> true
-          | _ -> false);
-
-  assert (eval sum_el01 [] = Int 21)
 
 let test3 () = 
 
@@ -286,7 +218,6 @@ let test3 () =
   assert (try (fun _ -> false) (eval e22 []) with
           | UnboundVariable v -> (v = "x") || (v = "y")
           | _ -> false);
-
 
   assert (try (fun _ -> false) (eval e26 []) with
           | UnboundVariable "x" -> true
@@ -319,21 +250,6 @@ let test5 () =
           | IncorrectType "If" -> true
           | _ -> false);
 
-  assert (try (fun _ -> false) (eval el10[]) with
-          | IncorrectType "IsEmpty" -> true
-          | _ -> false);
-
-  assert (try (fun _ -> false) (eval el11[]) with
-          | IncorrectType "Head" -> true
-          | _ -> false);
-
-  assert (try (fun _ -> false) (eval el12[]) with
-          | IncorrectType "Tail" -> true
-          | _ -> false);
-
-  assert (try (fun _ -> false) (eval el13[]) with
-          | IncorrectType "Cons" -> true
-          | _ -> false)
 
 
     

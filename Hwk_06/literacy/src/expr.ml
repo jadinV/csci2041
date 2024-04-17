@@ -39,8 +39,6 @@ and expr
   | Lam of string * expr
   | App of expr * expr
 
-  | MultiLet of (string * expr) list * expr
-
 (* Part 1: free variables *)
 
 let rec freevars (e: expr) : string list =
