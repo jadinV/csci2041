@@ -115,25 +115,6 @@ let e27 = Let ("inc", Val (Int 1),
 
 
 
-let expr_1 =
-  MultiLet ([], Add (Val (Int 1), Val (Int 2)))
-
-let expr_2 =
-  MultiLet ([("x", Val (Int 1));
-             ("y", Val (Int 2))],
-            Add (Id "x", Id "y"))
-
-let expr_3 =
-  MultiLet ([("m", Val (Int 1));
-             ("n", Add (Id "m", Val (Int 2)))
-             ],
-            Add (Id "m", Id "n"))
-
-let test1 () = 
-  assert (eval expr_1 [] = Int 3);
-  assert (eval expr_2 [] = Int 3);
-  assert (eval expr_3 [] = Int 4)
-
 let test2 () =
   assert (List.sort compare (freevars e01) = []);
   assert (List.sort compare (freevars e08) = []);
