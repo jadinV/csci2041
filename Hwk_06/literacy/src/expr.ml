@@ -131,7 +131,7 @@ let rec eval (e:expr) (env: environment) : value =
         | Bool v1 -> Bool (not v1)
         | _ -> raise (IncorrectType "Not")
       )
-  | Let (str, e1, e2) -> eval e2 [(str, (eval e1 env))]
+  | Let (str, e1, e2) -> eval e2 ((str, (eval e1 env)) :: env)
   | Id str ->
       ( match env with
       | [] -> raise (UnboundVariable str)
@@ -139,12 +139,12 @@ let rec eval (e:expr) (env: environment) : value =
       | _ :: lst -> eval (Id str) lst
       )
   | Lam (str, e1) ->
-    ( match eval e1 ((str, Int 0) :: env) with
-      | _ -> Closure (str, e1, env)
+    ( match eval e1 ((str, Int 0) :: env) with (* This is just to test for unbound variables *)
+      | _ when env <> [] -> let en = List.filter (fun (x, _) -> List.mem x (freevars e1)) env in Closure (str, e1, en)
+      | _ -> Closure (str, e1, [])
     )
-  | App (e1, e2) -> 
-      ( match env with
-        | [] -> raise (IncorrectType "App")
-        | (str, Closure (var, expr, environ)) :: _ when List.exists (fun x -> x = str) (freevars e1) -> eval expr ((var, eval e2 env) :: environ)
-        | _ :: envs -> eval (App (e1, e2)) envs
-      )
+  | App (e1, e2) ->
+    ( match eval e1 env with
+      | Closure (var, exp, environ) -> eval exp (((var, (eval e2 environ)) :: []) @ environ @ env)
+      | _ -> raise (IncorrectType "App")
+    )
