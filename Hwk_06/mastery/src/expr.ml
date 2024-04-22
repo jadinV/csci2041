@@ -50,9 +50,27 @@ and expr
 let rec freevars (e: expr) : string list =
   match e with
   | Val _ -> []
-
-  (* Remove this clause when you are finished implementing this function. *)
-  | _ -> raise (Failure "complete freevars")
+  | Add (e1, e2) -> freevars e1 @ freevars e2
+  | Sub (e1, e2) -> freevars e1 @ freevars e2
+  | Mul (e1, e2) -> freevars e1 @ freevars e2
+  | Div (e1, e2) -> freevars e1 @ freevars e2
+  | Neg e1 -> freevars e1
+  | Lt (e1, e2) -> freevars e1 @ freevars e2
+  | Gt (e1, e2) -> freevars e1 @ freevars e2
+  | Eq (e1, e2) -> freevars e1 @ freevars e2
+  | And (e1, e2) -> freevars e1 @ freevars e2
+  | Or (e1, e2) -> freevars e1 @ freevars e2
+  | Not e1 -> freevars e1
+  | Let (str, e1, e2) -> 
+      ( match List.exists (fun s -> s = str) (freevars e2) with
+        | true -> List.filter (fun s -> s <> str) (freevars e1 @ freevars e2)
+        | _ -> (freevars e1 @ freevars e2)
+      )
+  | Id str -> [str]
+  | Lam (str, e1) -> List.filter (fun s -> s <> str) (freevars e1)
+  | App (e1, e2) -> freevars e1 @ freevars e2
+  | LetRec (str, e1, e2) -> 
+  | If (e1, e2, e3) -> 
 
 
 
@@ -66,14 +84,78 @@ exception IncorrectType of string
 let rec eval (e:expr) (env: environment) : value =
   match e with
   | Val v -> v
-
   | Add (e1, e2) ->
-     ( match eval e1 env, eval e2 env with
-       | Int v1, Int v2 -> Int (v1 + v2)
-       | _ -> raise (IncorrectType "Add")
-     )
-  (* Remove this clause when you are finished implementing this function. *)
-  | _ -> raise (Failure "complete eval")
-
-
-
+      ( match eval e1 env, eval e2 env with
+        | Int v1, Int v2 -> Int (v1 + v2)
+        | _ -> raise (IncorrectType "Add")
+      )
+  | Sub (e1, e2) ->
+      ( match eval e1 env, eval e2 env with
+        | Int v1, Int v2 -> Int (v1 - v2)
+        | _ -> raise (IncorrectType "Sub")
+      )
+  | Mul (e1, e2) ->
+      ( match eval e1 env, eval e2 env with
+        | Int v1, Int v2 -> Int (v1 * v2)
+        | _ -> raise (IncorrectType "Mul")
+      )
+  | Div (e1, e2) ->
+      ( match eval e1 env, eval e2 env with
+        | Int v1, Int v2 when v2 = 0 -> raise (DivisionByZero (Int v1))
+        | Int v1, Int v2 -> Int (v1 / v2)
+        | _ -> raise (IncorrectType "Div")
+      )
+  | Neg e1 ->
+      ( match eval e1 env with
+        | Int v1 -> Int ((-1) * v1)
+        | _ -> raise (IncorrectType "Neg")
+      )
+  | Lt (e1, e2) ->
+      ( match eval e1 env, eval e2 env with
+        | Int v1, Int v2 -> Bool (v1 < v2)
+        | _ -> raise (IncorrectType "Lt")
+      )
+  | Gt (e1, e2) ->
+      ( match eval e1 env, eval e2 env with
+        | Int v1, Int v2 -> Bool (v1 > v2)
+        | _ -> raise (IncorrectType "Gt")
+      )
+  | Eq (e1, e2) ->
+      ( match eval e1 env, eval e2 env with
+        | Int v1, Int v2 -> Bool (v1 == v2)
+        | _ -> raise (IncorrectType "Eq")
+      )
+  | And (e1, e2) ->
+      ( match eval e1 env, eval e2 env with
+        | Bool v1, Bool v2 -> Bool (v1 && v2)
+        | _ -> raise (IncorrectType "And")
+      )
+  | Or (e1, e2) ->
+      ( match eval e1 env, eval e2 env with
+        | Bool v1, Bool v2 -> Bool (v1 || v2)
+        | _ -> raise (IncorrectType "Or")
+      )
+  | Not e1 ->
+      ( match eval e1 env with
+        | Bool v1 -> Bool (not v1)
+        | _ -> raise (IncorrectType "Not")
+      )
+  | Let (str, e1, e2) -> eval e2 ((str, (eval e1 env)) :: env)
+  | Id str ->
+      ( match env with
+      | [] -> raise (UnboundVariable str)
+      | (s, v) :: _ when s = str -> v
+      | _ :: lst -> eval (Id str) lst
+      )
+  | Lam (str, e1) ->
+    ( match eval e1 ((str, Int 0) :: env) with (* This is just to test for unbound variables *)
+      | _ when env <> [] -> let en = List.filter (fun (x, _) -> List.mem x (freevars e1)) env in Closure (str, e1, en)
+      | _ -> Closure (str, e1, [])
+    )
+  | App (e1, e2) ->
+    ( match eval e1 env with
+      | Closure (var, exp, environ) -> eval exp (((var, (eval e2 environ)) :: []) @ environ @ env)
+      | _ -> raise (IncorrectType "App")
+    )
+  | LetRec (str, e1, e2) -> 
+  | If (e1, e2, e3) -> 
