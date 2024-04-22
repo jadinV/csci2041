@@ -1,0 +1,50 @@
+(library
+ (modules formula)
+ (name formula))
+
+(library
+ (modules warmup)
+ (libraries formula)
+ (name warmup))
+
+(library
+ (modules warmup_tests)
+ (libraries formula warmup)
+ (name warmup_tests))
+
+(test
+ (modules warmup_tests_run)
+ (libraries formula warmup warmup_tests)
+ (name warmup_tests_run))
+
+
+(library
+ (modules literacy)
+ (libraries formula warmup)
+ (name literacy))
+
+(library
+ (modules literacy_tests)
+ (libraries formula warmup literacy)
+ (name literacy_tests))
+
+(test
+ (modules literacy_tests_run)
+ (libraries formula warmup literacy literacy_tests)
+ (name literacy_tests_run))
+
+
+(library
+ (modules mastery)
+ (libraries formula warmup)
+ (name mastery))
+
+(library
+ (modules mastery_tests)
+ (libraries formula warmup mastery)
+ (name mastery_tests))
+
+(test
+ (modules mastery_tests_run)
+ (libraries formula warmup mastery mastery_tests)
+ (name mastery_tests_run))
