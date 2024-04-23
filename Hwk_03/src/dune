@@ -1,0 +1,16 @@
+(library
+ (modules warmup)
+ (name warmup))
+
+(library
+ (modules literacy)
+ (name literacy))
+
+(library
+ (modules mastery)
+ (name mastery))
+
+
+(env
+  (dev
+    (flags (:standard -w -27-39))))
