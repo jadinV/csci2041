@@ -24,7 +24,7 @@ module TreeMapImpl = struct
 
   let empty = Empty
   
-  let rec lookup (k: 'k) (lst: ('k, 'v) t) : 'v option = 
+  let rec lookup (k: 'k) (tr: ('k, 'v) t) : 'v option = 
     match tr with
     | Empty -> None
     | Node (_, key, v, _) when key = k -> Some v
@@ -38,7 +38,7 @@ module TreeMapImpl = struct
     | Node (l, key, v, r) when key < ky -> Node (l, key, v, add ky value r)
     | Node (l, key, v, r) -> Node (add ky value l, key, v, r)
 
-  let insert (k: 'k) (v: 'v) (lst: ('k, 'v) t) : ('k, 'v) t = add k v tr
+  let insert (k: 'k) (v: 'v) (tr: ('k, 'v) t) : ('k, 'v) t = add k v tr
 
   let rec tree_fix (tr: ('k, 'v) t) (left: ('k, 'v) t) : ('k, 'v) t =
     match tr with
@@ -46,7 +46,7 @@ module TreeMapImpl = struct
     | Node (Empty, k, v, r) -> Node (left, k, v, r)
     | Node (l, _, _, _) -> tree_fix l left
 
-  let rec remove (k: 'k) (lst: ('k, 'v) t) : ('k, 'v) t =
+  let rec remove (k: 'k) (tr: ('k, 'v) t) : ('k, 'v) t =
     match tr with
     | Empty -> Empty
     | Node (_, ky, _, _) when k = ky -> (match tr with

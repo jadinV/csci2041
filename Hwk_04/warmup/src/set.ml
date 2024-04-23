@@ -27,13 +27,13 @@ module TreeSet : S = struct
             | Node of 'a t * 'a * 'a t
 
   let empty = Empty
-  let add (v: 'a) (lst: 'a t) : 'a t = Node (tr, v, Empty)
-  let elem (v: 'a) (lst: 'a t) : bool = let rec findInTree (value: 'a) (tre: 'a t) : bool =
+  let add (v: 'a) (tr: 'a t) : 'a t = Node (tr, v, Empty)
+  let elem (v: 'a) (tr: 'a t) : bool = let rec findInTree (value: 'a) (tre: 'a t) : bool =
                     match tre with
                     | Empty -> false
                     | Node (l, n, r) -> findInTree value l || n = value || findInTree value r
                   in findInTree v tr
-  let size (lst: 'a t) : int = let rec sizeTree (tre: 'a t) : int = 
+  let size (tr: 'a t) : int = let rec sizeTree (tre: 'a t) : int = 
                   match tre with
                   | Empty -> 0
                   | Node (l, n, r) when (elem n l) || (elem n r) -> sizeTree l + sizeTree r

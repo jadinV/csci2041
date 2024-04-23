@@ -34,7 +34,7 @@ module TreeMapImpl (O: Ord) = struct
 
   let empty = Empty
 
-  let rec lookup (k: key) (lst: 'v t) : 'v option = 
+  let rec lookup (k: key) (tr: 'v t) : 'v option = 
     match tr with
     | Empty -> None
     | Node (_, key, v, _) when O.eq key k -> Some v
@@ -48,7 +48,7 @@ module TreeMapImpl (O: Ord) = struct
     | Node (l, key, v, r) when O.cmp key ky < 0 -> Node (l, key, v, add ky value r)
     | Node (l, key, v, r) -> Node (add ky value l, key, v, r)
 
-  let insert (k: key) (v: 'v) (lst: 'v t) : 'v t = add k v tr
+  let insert (k: key) (v: 'v) (tr: 'v t) : 'v t = add k v tr
 
   let rec tree_fix (tr: 'v t) (left: 'v t) : 'v t =
     match tr with
@@ -56,7 +56,7 @@ module TreeMapImpl (O: Ord) = struct
     | Node (Empty, k, v, r) -> Node (left, k, v, r)
     | Node (l, _, _, _) -> tree_fix l left
 
-  let rec remove (k: key) (lst: 'v t) : 'v t =
+  let rec remove (k: key) (tr: 'v t) : 'v t =
     match tr with
     | Empty -> raise (Failure ("No key with value k"))
     | Node (_, ky, _, _) when O.eq k ky -> (match tr with
