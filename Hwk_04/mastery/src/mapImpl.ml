@@ -6,12 +6,12 @@ module ListMapImpl (E: Eq) = struct
 
   let empty = []
 
-  let lookup k lst =
+  let lookup (k: key) (lst: 'v t) : 'v option =
     match List.find_opt (fun (x, _) -> E.eq k x) lst with
     | None -> None
     | Some (_, v) -> Some v
   
-  let insert k v lst =
+  let insert (k: key) (v: 'v) (lst: 'v t) : 'v t =
     if (List.exists (fun (x, _) -> E.eq k x) lst)
     then List.map (fun (x, cv) -> if E.eq k x
                                   then (k, v)
@@ -19,7 +19,7 @@ module ListMapImpl (E: Eq) = struct
                   ) lst
     else (k, v)::lst
   
-  let remove k lst =
+  let remove (k: key) (lst: 'v t) : 'v t =
     List.filter_map (fun (x, v) -> if (E.eq k x)
                                    then None
                                    else Some (x, v)
@@ -34,29 +34,29 @@ module TreeMapImpl (O: Ord) = struct
 
   let empty = Empty
 
-  let rec lookup k tr = 
+  let rec lookup (k: key) (lst: 'v t) : 'v option = 
     match tr with
     | Empty -> None
     | Node (_, key, v, _) when O.eq key k -> Some v
     | Node (l, key, _, _) when O.cmp key k > 0 -> lookup k l
     | Node (_, _, _, r) -> lookup k r
 
-  let rec add ky value tre =
+  let rec add (ky: key) (value: 'v) (tre: 'v t) : 'v t =
     match tre with
     | Empty -> Node (Empty, ky, value, Empty)
     | Node (l, key, _, r) when O.eq key ky -> Node (l, ky, value, r)
     | Node (l, key, v, r) when O.cmp key ky < 0 -> Node (l, key, v, add ky value r)
     | Node (l, key, v, r) -> Node (add ky value l, key, v, r)
 
-  let insert k v tr = add k v tr
+  let insert (k: key) (v: 'v) (lst: 'v t) : 'v t = add k v tr
 
-  let rec tree_fix tr left =
+  let rec tree_fix (tr: 'v t) (left: 'v t) : 'v t =
     match tr with
     | Empty -> raise (Failure "Empty tree")
     | Node (Empty, k, v, r) -> Node (left, k, v, r)
     | Node (l, _, _, _) -> tree_fix l left
 
-  let rec remove k tr =
+  let rec remove (k: key) (lst: 'v t) : 'v t =
     match tr with
     | Empty -> raise (Failure ("No key with value k"))
     | Node (_, ky, _, _) when O.eq k ky -> (match tr with

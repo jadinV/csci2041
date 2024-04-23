@@ -3,17 +3,17 @@ module ListMapImpl = struct
 
   let empty = []
 
-  let lookup k lst = match List.find_opt (fun (x, _) -> x = k) lst with
+  let lookup (k: 'k) (lst: ('k, 'v) t) : 'v option = match List.find_opt (fun (x, _) -> x = k) lst with
                      | None -> None
                      | Some (_, v) -> Some v
   
-  let insert k v lst = if (List.exists (fun (x, _) -> x = k) lst)
+  let insert (k: 'k) (v: 'v) (lst: ('k, 'v) t) : ('k, 'v) t = if (List.exists (fun (x, _) -> x = k) lst)
                           then List.map (fun (x, cv) -> if x = k
                                                         then (k, v)
                                                         else (x, cv)) lst
                           else (k, v)::lst
   
-  let remove k lst = List.filter_map (fun (x, cv) -> if (x = k)
+  let remove (k: 'k) (lst: ('k, 'v) t) : ('k, 'v) t = List.filter_map (fun (x, cv) -> if (x = k)
                                                           then None
                                                           else Some (x, cv)) lst
 end
@@ -24,29 +24,29 @@ module TreeMapImpl = struct
 
   let empty = Empty
   
-  let rec lookup k tr = 
+  let rec lookup (k: 'k) (lst: ('k, 'v) t) : 'v option = 
     match tr with
     | Empty -> None
     | Node (_, key, v, _) when key = k -> Some v
     | Node (l, key, _, _) when key > k -> lookup k l
     | Node (_, _, _, r) -> lookup k r
 
-  let rec add ky value tre =
+  let rec add (ky: 'k) (value: 'v) (tre: ('k, 'v) t) : ('k, 'v) t =
     match tre with
     | Empty -> Node (Empty, ky, value, Empty)
     | Node (l, key, _, r) when key = ky -> Node (l, ky, value, r)
     | Node (l, key, v, r) when key < ky -> Node (l, key, v, add ky value r)
     | Node (l, key, v, r) -> Node (add ky value l, key, v, r)
 
-  let insert k v tr = add k v tr
+  let insert (k: 'k) (v: 'v) (lst: ('k, 'v) t) : ('k, 'v) t = add k v tr
 
-  let rec tree_fix tr left =
+  let rec tree_fix (tr: ('k, 'v) t) (left: ('k, 'v) t) : ('k, 'v) t =
     match tr with
     | Empty -> raise (Failure "Empty tree")
     | Node (Empty, k, v, r) -> Node (left, k, v, r)
     | Node (l, _, _, _) -> tree_fix l left
 
-  let rec remove k tr =
+  let rec remove (k: 'k) (lst: ('k, 'v) t) : ('k, 'v) t =
     match tr with
     | Empty -> Empty
     | Node (_, ky, _, _) when k = ky -> (match tr with

@@ -11,9 +11,9 @@ module ListSet : S = struct
   type 'a t = 'a list
 
   let empty = []
-  let add v lst = v::lst
-  let elem v lst = List.exists (fun x -> x = v) lst
-  let size lst = let rec sizeList (lis: 'a t) : int = 
+  let add (v: 'a) (lst: 'a t) : 'a t = v::lst
+  let elem (v: 'a) (lst: 'a t) : bool = List.exists (fun x -> x = v) lst
+  let size (lst: 'a t) : int = let rec sizeList (lis: 'a t) : int = 
                    match lis with
                    | [] -> 0
                    | x::xs when (elem x xs) -> sizeList xs
@@ -27,13 +27,13 @@ module TreeSet : S = struct
             | Node of 'a t * 'a * 'a t
 
   let empty = Empty
-  let add v tr = Node (tr, v, Empty)
-  let elem v tr = let rec findInTree (value: 'a) (tre: 'a t) : bool =
+  let add (v: 'a) (lst: 'a t) : 'a t = Node (tr, v, Empty)
+  let elem (v: 'a) (lst: 'a t) : bool = let rec findInTree (value: 'a) (tre: 'a t) : bool =
                     match tre with
                     | Empty -> false
                     | Node (l, n, r) -> findInTree value l || n = value || findInTree value r
                   in findInTree v tr
-  let size tr = let rec sizeTree (tre: 'a t) : int = 
+  let size (lst: 'a t) : int = let rec sizeTree (tre: 'a t) : int = 
                   match tre with
                   | Empty -> 0
                   | Node (l, n, r) when (elem n l) || (elem n r) -> sizeTree l + sizeTree r
