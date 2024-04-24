@@ -167,17 +167,13 @@ for all `xs : int list`, `ys : int list`, `P(xs, ys)` if
 
 ### 4. Inductive Case to Prove
 
-`prod (app l1 l2) = prod l1 * prod l2`
+`prod (app (hd::tl) l2) = prod (hd::tl) * prod l2`
 
 ### 5. Inductive Hypothesis
 
 `prod (app tl l2) = prod tl * prod l2`
 
 ### 6. Proof of Inductive Case
-
-`prod (app l1 l2)`
-
-- by properties of lists
 
 `= prod (app hd::tl l2)`
 
@@ -195,4 +191,4 @@ for all `xs : int list`, `ys : int list`, `P(xs, ys)` if
 
 - by definition of prod
 
-`=  prod l1 * prod l2`
+`=  prod (hd::tl) * prod l2`
