@@ -35,4 +35,4 @@ let rec eval (f:formula) (env: (string * bool) list) : bool =
   | And (l, r) -> eval l env && eval r env
   | Or (l, r) -> eval l env || eval r env
   | Not form -> not (eval form env)
-  | Implies (l, r) -> raise (Failure "Can not eval implication")
+  | Implies (_, _) -> raise (Failure "Can not eval implication")
