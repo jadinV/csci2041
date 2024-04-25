@@ -94,43 +94,35 @@ for all `xs : 'a nonempty`, `P(xs)` if
 
 ### 4. Inductive Case to Prove
 
-`rev (app Cons (m, l1) Cons (n, l2)) = app (rev Cons (n, l2)) (rev Cons (m, l1))`
+`rev (app Cons (hd, tl) l2) = app (rev l2) (rev Cons (hd, tl))`
 
 ### 5. Inductive Hypothesis
 
-`rev (app l1 Cons (n, l2)) = app ((rev Cons (n, l2)) rev l1)`
+`rev (app tl l2) = app ((rev l2) rev tl)`
 
 ### 6. Proof of Inductive Case
 
-`rev (app Cons (m, l1) Cons (n, l2))`
+`rev (app Cons (hd, tl) l2)`
 
 - by definition of app
 
-`= rev (Cons (m, app l1 Cons (n, l2)))`
+`= rev (Cons (hd, app tl l2))`
 
 - by definition of rev
 
-`= app (rev (app l1 Cons (n, l2))) One m`
+`= app (rev (app tl l2) (One hd))`
 
 - by inductive hypothesis
 
-`= app (app ((rev Cons (n, l2)) rev l1)) One m`
+`= app (app ((rev l2) rev tl) (One hd))`
 
-- by definition of rev'
+- by Prove the associativity of append for nonempy lists
 
-`= app (app ((app (rev l2) One n) rev l1)) One m`
-
-- by associativity of append for nonempty lists
-
-`= app (app (rev l2) One n) (app (rev l1) One m)`
+`= app (rev l2) (app (rev tl) (One hd))`
 
 - by definition of rev
 
-`= app (rev Cons (n, l2)) (app (rev l1) One m)`
-
-- by definition of rev
-
-`= app (rev Cons (n, l2)) (rev Cons (m, l1))`
+`= app (rev l2) (rev Cons (hd, tl))`
 
 ## Consider purity
 
